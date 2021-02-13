@@ -22,5 +22,7 @@ Assumption:
 1. If same product exist in both barcode set, take Company A's.
 2. file name checking order: catalog > supplier > barcode
 
-Steps:
-1. 
+todo: 
+1. read const from config file
+2. add logging
+3. clean up debug console log.

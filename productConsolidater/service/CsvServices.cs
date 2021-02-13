@@ -3,17 +3,14 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using CsvHelper;
-using CsvHelper.Configuration;
 using productConsolidater.model;
 
 namespace productConsolidater.service
 {
     public class CsvServices : ICsvServices
     {
-        private readonly string _filePath = "Files/"; // Release build
-        // private readonly string _filePath = "../../../Files/";    // Debug build
+        // todo: read from config file.
 
         public IEnumerable<Catalog> ReadCatalogs(string filename, int sourceId)
         {

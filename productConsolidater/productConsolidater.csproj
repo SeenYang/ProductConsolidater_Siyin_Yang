@@ -6,6 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="automapper" Version="10.1.1" />
       <PackageReference Include="csvhelper" Version="23.0.0" />
       <PackageReference Include="microsoft.extensions.dependencyInjection" Version="5.0.1" />
       <PackageReference Include="microsoft.extensions.dependencyInjection.abstractions" Version="5.0.0" />

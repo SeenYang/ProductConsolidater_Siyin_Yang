@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "productConsolidater", "productConsolidater\productConsolidater.csproj", "{DAF0A185-2765-414B-BC69-6C40E75F3B08}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DAF0A185-2765-414B-BC69-6C40E75F3B08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAF0A185-2765-414B-BC69-6C40E75F3B08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAF0A185-2765-414B-BC69-6C40E75F3B08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAF0A185-2765-414B-BC69-6C40E75F3B08}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

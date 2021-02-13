@@ -1,5 +1,4 @@
 using CsvHelper.Configuration;
-using CsvHelper.Configuration.Attributes;
 
 namespace productConsolidater.model
 {

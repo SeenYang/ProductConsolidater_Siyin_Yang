@@ -4,9 +4,15 @@ namespace productConsolidater.model.dto
 {
     public class DataSourceDto
     {
-        public DataSourceDto(int id, 
-            string sourceName, 
-            string fileName, 
+        public int SourceId { get; set; }
+        public string SourceName { get; set; }
+        public string CatalogFilename { get; set; }
+        public string SupplierFileName { get; set; }
+        public string BarcodeFilename { get; set; }
+
+        public DataSourceDto(int id,
+            string sourceName,
+            string fileName,
             DataSourceEnum dataSourceType)
         {
             SourceId = id;
@@ -30,12 +36,6 @@ namespace productConsolidater.model.dto
             }
         }
 
-        public int SourceId { get; set; }
-        public string SourceName { get; set; }
-        public string CatalogFilename { get; set; }
-        public string SupplierFileName { get; set; }
-        public string BarcodeFilename { get; set; }
-
         public void SetupFileName(string fileName, DataSourceEnum type)
         {
             switch (type)
@@ -56,7 +56,7 @@ namespace productConsolidater.model.dto
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
         }
-        
+
         public bool GotAllDataSource()
         {
             return !string.IsNullOrWhiteSpace(CatalogFilename) &&

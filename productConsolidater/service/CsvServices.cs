@@ -15,14 +15,18 @@ namespace productConsolidater.service
         private readonly string _filePath = "Files/"; // Release build
         // private readonly string _filePath = "../../../Files/";    // Debug build
 
-        public IEnumerable<Catalog> ReadCatalogs(string filename)
+        public IEnumerable<Catalog> ReadCatalogs(string filename, int sourceId)
         {
             try
             {
                 using var reader = new StreamReader($"../../../input/{filename}"); // Debug build
                 // using var reader = new StreamReader($"input/{filename}");
                 using var file = new CsvReader(reader, CultureInfo.InvariantCulture);
-                return file.GetRecords<Catalog>()?.ToList();
+                file.Context.RegisterClassMap<CatalogMap>();
+
+                var result = file.GetRecords<Catalog>()?.ToList();
+                result?.ForEach(r => r.DataSourceId = sourceId);
+                return result;
             }
             catch (Exception e)
             {
@@ -31,14 +35,18 @@ namespace productConsolidater.service
             }
         }
 
-        public IEnumerable<Supplier> ReadSuppliers(string filename)
+        public IEnumerable<Supplier> ReadSuppliers(string filename, int sourceId)
         {
             try
             {
                 using var reader = new StreamReader($"../../../input/{filename}"); // Debug build
                 // using var reader = new StreamReader($"input/{filename}");
                 using var file = new CsvReader(reader, CultureInfo.InvariantCulture);
-                return file.GetRecords<Supplier>()?.ToList();
+                file.Context.RegisterClassMap<SupplierMap>();
+
+                var result = file.GetRecords<Supplier>()?.ToList();
+                result?.ForEach(r => r.DataSourceId = sourceId);
+                return result;
             }
             catch (Exception e)
             {
@@ -47,14 +55,18 @@ namespace productConsolidater.service
             }
         }
 
-        public IEnumerable<SupplierProductBarcode> ReadBarcodes(string filename)
+        public IEnumerable<SupplierProductBarcode> ReadBarcodes(string filename, int sourceId)
         {
             try
             {
                 using var reader = new StreamReader($"../../../input/{filename}"); // Debug build
                 // using var reader = new StreamReader($"input/{filename}");
                 using var file = new CsvReader(reader, CultureInfo.InvariantCulture);
-                return file.GetRecords<SupplierProductBarcode>()?.ToList();
+                file.Context.RegisterClassMap<BarcodeMap>();
+
+                var result = file.GetRecords<SupplierProductBarcode>()?.ToList();
+                result?.ForEach(r => r.DataSourceId = sourceId);
+                return result;
             }
             catch (Exception e)
             {

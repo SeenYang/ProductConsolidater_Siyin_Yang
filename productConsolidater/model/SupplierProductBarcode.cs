@@ -1,10 +1,10 @@
+using CsvHelper.Configuration;
 using CsvHelper.Configuration.Attributes;
 
 namespace productConsolidater.model
 {
     public class SupplierProductBarcode
     {
-        [Name("SupplierID")] 
         public int SupplierId { get; set; }
 
         /// <summary>
@@ -14,13 +14,24 @@ namespace productConsolidater.model
         /// SKU is internal id that track where the inventory is.
         /// </summary>
 
-        [Name("SKU")]
         public string Sku { get; set; }
 
         /// <summary>
         /// This is the UPC (universal product code)
         /// </summary>
-        [Name("Barcode")]
         public string Barcode { get; set; }
+        
+        public int DataSourceId { get; set; }
+    }
+    
+    public sealed class BarcodeMap : ClassMap<SupplierProductBarcode>
+    {
+        public BarcodeMap()
+        {
+            // Ignore DataSource.
+            Map(m => m.SupplierId).Name("SupplierID");;
+            Map(m => m.Sku).Name("SKU");;
+            Map(m => m.Barcode).Name("Barcode");;
+        }
     }
 }

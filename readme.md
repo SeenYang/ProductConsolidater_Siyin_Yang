@@ -23,12 +23,13 @@ option 2:
 ```
 
 ```
-option 3:
+option 3:   
 1. get the source code
 2. use termial go in the foler
 3. run `dotnet publish -c Release`
 4. go to ~\productConsolidater\bin\Release\net5.0\publish\ and put files into `\input` folder
-5. run productConsolidater.exe
+5.1. run productConsolidater.exe                -- Windows
+5.2. run `dotnet run productConsolidater.dll`   -- MacOS
 6. check /output folder for result.
 ```
 

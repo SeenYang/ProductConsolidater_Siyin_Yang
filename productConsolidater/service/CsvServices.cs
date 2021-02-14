@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using CsvHelper;
+using NLog;
 using productConsolidater.model;
 
 namespace productConsolidater.service
@@ -11,6 +12,8 @@ namespace productConsolidater.service
     public class CsvServices : ICsvServices
     {
         // todo: read from config file.
+
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public IEnumerable<Catalog> ReadCatalogs(string filename, int sourceId)
         {
@@ -28,6 +31,7 @@ namespace productConsolidater.service
             catch (Exception e)
             {
                 var message = $"Something wrong occurred while reading the file {filename}. Exception message: {e}";
+                logger.Error(message);
                 throw new Exception(message);
             }
         }
@@ -48,6 +52,7 @@ namespace productConsolidater.service
             catch (Exception e)
             {
                 var message = $"Something wrong occurred while reading the file {filename}. Exception message: {e}";
+                logger.Error(message);
                 throw new Exception(message);
             }
         }
@@ -68,6 +73,7 @@ namespace productConsolidater.service
             catch (Exception e)
             {
                 var message = $"Something wrong occurred while reading the file {filename}. Exception message: {e}";
+                logger.Error(message);
                 throw new Exception(message);
             }
         }
@@ -77,7 +83,8 @@ namespace productConsolidater.service
             try
             {
                 var fileName = $"result_output_{DateTime.UtcNow:yyyyMMddhhssss}";
-                Console.WriteLine($"Printing file {fileName}.csv");
+                logger.Info($"Printing file {fileName}.csv");
+                
                 using var streamWriter =
                     new StreamWriter($"../../../output/{fileName}.csv");
                 // using var writer = new StreamWriter($"output/result_output_{DateTime.UtcNow:yyyyMMddhhssss}.csv");
@@ -92,6 +99,7 @@ namespace productConsolidater.service
             catch (Exception e)
             {
                 var message = $"Something wrong occurred while writing the file. Exception message: {e}";
+                logger.Error(message);
                 throw new Exception(message);
             }
         }

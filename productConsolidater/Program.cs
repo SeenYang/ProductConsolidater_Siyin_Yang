@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using AutoMapper;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NLog;
 using productConsolidater.model;
 using productConsolidater.model.dto;
 using productConsolidater.service;
@@ -14,7 +16,10 @@ namespace productConsolidater
     {
         private static IServiceProvider _serviceProvider;
         private static IMapper _mapper;
-        private static readonly string _inputFilePath = "../../../input";
+        private static IConfigurationRoot _config;
+        private static Logger Logger;
+
+        private const string _inputFilePath = "../../../input";
 
         // Initial in-memory data set.
         private static readonly List<Catalog> _catalogs = new List<Catalog>();
@@ -25,7 +30,10 @@ namespace productConsolidater
 
         private static void Main(string[] args)
         {
+            AddConfiguration();
             RegisterServices();
+
+
             // todo: replace with real data provider and put into DI for better usage.
             var mockContext = new MockDbContextDto
             {
@@ -58,7 +66,7 @@ namespace productConsolidater
             if (csvSvc == null || datasourceService == null) throw new Exception("Fail to initial service(s).");
 
             // read file names
-            var fileNames = Directory.GetFiles(_inputFilePath)
+            var fileNames = Directory.GetFiles(_config["InputFilePath"])
                 .Select(Path.GetFileName)
                 .ToArray();
 
@@ -79,7 +87,7 @@ namespace productConsolidater
             var incompleteDataSource = dataSources.Where(d => !d.GotAllDataSource()).ToList();
             if (incompleteDataSource.Any())
             {
-                Console.WriteLine("** Following data source will be skip due to missing data source file;");
+                Logger.Info("** Following data source will be skip due to missing data source file;");
                 foreach (var dataSource in incompleteDataSource)
                 {
                     var msg = $"Data Source: {dataSource.SourceName}" +
@@ -87,13 +95,13 @@ namespace productConsolidater
                               $"{(string.IsNullOrWhiteSpace(dataSource.BarcodeFilename) ? Environment.NewLine + "Barcode file." : string.Empty)}" +
                               $"{(string.IsNullOrWhiteSpace(dataSource.BarcodeFilename) ? Environment.NewLine + "Barcode file." : string.Empty)}";
 
-                    Console.WriteLine(msg);
+                    Logger.Info(msg);
                 }
             }
 
             foreach (var source in dataSources.Where(d => d.GotAllDataSource()))
             {
-                Console.WriteLine($"Adding data source from {source.SourceName}, sourceId: {source.SourceId}");
+                Logger.Info($"Adding data source from {source.SourceName}, sourceId: {source.SourceId}");
                 context.Company.Add(_mapper.Map<DataSourceDto, Company>(source));
                 context.Catalog.AddRange(csvSvc.ReadCatalogs(source.CatalogFilename, source.SourceId));
                 context.Supplier.AddRange(csvSvc.ReadSuppliers(source.SupplierFileName, source.SourceId));
@@ -103,11 +111,30 @@ namespace productConsolidater
 
         private static void ProcessProducts(MockDbContextDto mockContext)
         {
-            Console.WriteLine($"Processing data.");
+            Logger.Info($"Processing data.");
             var _service = _serviceProvider.GetService<IProductService>();
             if (_service == null) throw new Exception("Fail to initial IProductService.");
 
             _service.ProcessProduct(mockContext);
+        }
+
+        private static void AddConfiguration()
+        {
+            var env = Environment.GetEnvironmentVariable("ASPNET_ENVIRONMENT");
+
+            var builder = new ConfigurationBuilder()
+                .AddEnvironmentVariables("Developoment")
+                .AddJsonFile($"appsettings.json", true, true)
+                .AddJsonFile($"appsettings.{env}.json", true, true)
+                .AddEnvironmentVariables();
+
+            _config = builder.Build();
+
+            var logConfig = new NLog.Config.LoggingConfiguration();
+            var logConsole = new NLog.Targets.ConsoleTarget("logconsole");
+            logConfig.AddRule(LogLevel.Info, LogLevel.Fatal, logConsole);
+            LogManager.Configuration = logConfig;
+            Logger = LogManager.GetCurrentClassLogger();
         }
 
         private static void RegisterServices()

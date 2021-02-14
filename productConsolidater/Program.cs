@@ -68,7 +68,7 @@ namespace productConsolidater
             var csvSvc = _serviceProvider.GetService<ICsvServices>();
             if (csvSvc == null) throw new Exception("Fail to initial service(s).");
 
-            csvSvc.WriteOutput(context.ConsolidatedCatalog);
+            csvSvc.WriteOutput(context.ConsolidatedCatalog,_config["OutputFilePath"] );
         }
 
         private static void GetDataSource(MockDbContextDto context)

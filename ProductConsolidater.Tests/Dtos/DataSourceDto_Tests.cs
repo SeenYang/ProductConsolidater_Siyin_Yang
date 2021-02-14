@@ -40,10 +40,10 @@ namespace ProductConsolidater.Tests.Dtos
 
 
         [Theory]
-        [InlineData("TestFile4.csv", DataSourceEnum.Default,
-            @"Should throw exception due to data source type invalid. ")]
-        public void SetupFileNameTest_InvalidCases(string fileName, DataSourceEnum type, string errorMsg)
+        [InlineData("TestFile4.csv", DataSourceEnum.Default)]
+        public void SetupFileNameTest_InvalidCases(string fileName, DataSourceEnum type)
         {
+            // Should throw exception due to data source type invalid.
             var sourceDto = new DataSourceDto();
             var exception = Record.Exception(() => { sourceDto.SetupFileName(fileName, type); });
 

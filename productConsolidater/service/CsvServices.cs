@@ -75,15 +75,15 @@ namespace productConsolidater.service
             }
         }
 
-        public void WriteOutput(List<ConsolidatedCatalog> consolidatedCatalogs)
+        public void WriteOutput(List<ConsolidatedCatalog> consolidatedCatalogs, string filePath)
         {
             try
             {
-                var fileName = $"result_output_{DateTime.UtcNow:yyyyMMddhhssss}";
-                logger.Info($"Printing file {fileName}.csv");
+                var fileName = $"result_output_{DateTime.UtcNow:yyyyMMddhhssss}.csv";
+                logger.Info($"Printing file {fileName}");
 
                 using var streamWriter =
-                    new StreamWriter($"../../../output/{fileName}.csv");
+                    new StreamWriter(filePath + fileName);
                 // using var writer = new StreamWriter($"output/result_output_{DateTime.UtcNow:yyyyMMddhhssss}.csv");
                 using var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture);
                 csvWriter.Context.RegisterClassMap<ConsolidatedCatalogMap>();

@@ -11,6 +11,6 @@ namespace productConsolidater.service
 
         IEnumerable<SupplierProductBarcode> ReadBarcodes(string filename, int sourceId, string filePath);
 
-        void WriteOutput(List<ConsolidatedCatalog> detectedTransactions);
+        void WriteOutput(List<ConsolidatedCatalog> detectedTransactions, string filePath);
     }
 }

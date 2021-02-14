@@ -10,20 +10,20 @@ using productConsolidater.service;
 
 namespace productConsolidater
 {
-    class Program
+    internal class Program
     {
         private static IServiceProvider _serviceProvider;
         private static IMapper _mapper;
         private static readonly string _inputFilePath = "../../../input";
 
         // Initial in-memory data set.
-        private static List<Catalog> _catalogs = new List<Catalog>();
-        private static List<Supplier> _suppliers = new List<Supplier>();
-        private static List<SupplierProductBarcode> _barcodes = new List<SupplierProductBarcode>();
-        private static List<ConsolidatedCatalog> _consolidatedCatalogs = new List<ConsolidatedCatalog>();
-        private static List<Company> _companies = new List<Company>();
+        private static readonly List<Catalog> _catalogs = new List<Catalog>();
+        private static readonly List<Supplier> _suppliers = new List<Supplier>();
+        private static readonly List<SupplierProductBarcode> _barcodes = new List<SupplierProductBarcode>();
+        private static readonly List<ConsolidatedCatalog> _consolidatedCatalogs = new List<ConsolidatedCatalog>();
+        private static readonly List<Company> _companies = new List<Company>();
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             RegisterServices();
             // todo: replace with real data provider and put into DI for better usage.
@@ -35,46 +35,27 @@ namespace productConsolidater
                 ConsolidatedCatalog = _consolidatedCatalogs,
                 Company = _companies
             };
+
             GetDataSource(mockContext);
             ProcessProducts(mockContext);
-
-            foreach (var catalog in _catalogs)
-            {
-                Console.WriteLine(
-                    $"Catalog SKU: {catalog.Sku}, Description: {catalog.Description}, Source: {catalog.DataSourceId}");
-            }
-            foreach (var supplier in _suppliers)
-            {
-                Console.WriteLine(
-                    $"Supplier Id: {supplier.Id}, Name: {supplier.Name}, Source: {supplier.DataSourceId}");
-            }
-            foreach (var barcode in _barcodes)
-            {
-                Console.WriteLine(
-                    $"Barcode SKU: {barcode.Sku}, Supplier: {barcode.SupplierId}, Barcode: {barcode.Barcode}, Source: {barcode.DataSourceId}");
-            }
+            PrintProcessedData(mockContext);
 
             DisposeServices();
         }
 
-        private static void RegisterServices()
+        private static void PrintProcessedData(MockDbContextDto context)
         {
-            var collection = new ServiceCollection();
-            collection.AddScoped<ICsvServices, CsvServices>();
-            collection.AddScoped<IDatasourceService, DatasourceService>();
-            collection.AddScoped<IProductService, ProductService>();
-            _serviceProvider = collection.BuildServiceProvider();
-            InitializeAutomapper();
+            var csvSvc = _serviceProvider.GetService<ICsvServices>();
+            if (csvSvc == null) throw new Exception("Fail to initial service(s).");
+
+            csvSvc.WriteOutput(context.ConsolidatedCatalog);
         }
 
         private static void GetDataSource(MockDbContextDto context)
         {
             var csvSvc = _serviceProvider.GetService<ICsvServices>();
             var datasourceService = _serviceProvider.GetService<IDatasourceService>();
-            if (csvSvc == null || datasourceService == null)
-            {
-                throw new Exception("Fail to initial service(s).");
-            }
+            if (csvSvc == null || datasourceService == null) throw new Exception("Fail to initial service(s).");
 
             // read file names
             var fileNames = Directory.GetFiles(_inputFilePath)
@@ -89,13 +70,9 @@ namespace productConsolidater
 
                 var exist = dataSources.FirstOrDefault(d => string.Equals(d.SourceName, sourceName));
                 if (exist == null)
-                {
                     dataSources.Add(new DataSourceDto(dataSources.Count + 1, sourceName, fileName, dataSourceType));
-                }
                 else
-                {
                     exist.SetupFileName(fileName, dataSourceType);
-                }
             }
 
             // Log incomplete data source.
@@ -126,16 +103,24 @@ namespace productConsolidater
 
         private static void ProcessProducts(MockDbContextDto mockContext)
         {
+            Console.WriteLine($"Processing data.");
             var _service = _serviceProvider.GetService<IProductService>();
-            if (_service == null)
-            {
-                throw new Exception("Fail to initial IProductService.");
-            }
+            if (_service == null) throw new Exception("Fail to initial IProductService.");
 
             _service.ProcessProduct(mockContext);
         }
 
-        static void InitializeAutomapper()
+        private static void RegisterServices()
+        {
+            var collection = new ServiceCollection();
+            collection.AddScoped<ICsvServices, CsvServices>();
+            collection.AddScoped<IDatasourceService, DatasourceService>();
+            collection.AddScoped<IProductService, ProductService>();
+            _serviceProvider = collection.BuildServiceProvider();
+            InitializeAutomapper();
+        }
+
+        private static void InitializeAutomapper()
         {
             var config = new MapperConfiguration(cfg => { cfg.CreateMap<DataSourceDto, Company>(); });
             _mapper = new Mapper(config);

@@ -1,5 +1,4 @@
 using CsvHelper.Configuration;
-using CsvHelper.Configuration.Attributes;
 
 namespace productConsolidater.model
 {
@@ -7,17 +6,17 @@ namespace productConsolidater.model
     {
         public string Sku { get; set; }
         public string Description { get; set; }
-        
         public int DataSourceId { get; set; }
     }
-    
+
     public sealed class CatalogMap : ClassMap<Catalog>
     {
         public CatalogMap()
         {
             // Ignore DataSource.
             Map(m => m.Sku).Name("SKU");
-            Map(m => m.Description).Name("Description");;
+            Map(m => m.Description).Name("Description");
+            ;
         }
     }
 }

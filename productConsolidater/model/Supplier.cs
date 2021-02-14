@@ -6,8 +6,8 @@ namespace productConsolidater.model
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        
-         public int DataSourceId { get; set; }
+
+        public int DataSourceId { get; set; }
     }
 
     public sealed class SupplierMap : ClassMap<Supplier>

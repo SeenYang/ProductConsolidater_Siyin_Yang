@@ -10,7 +10,7 @@ namespace productConsolidater.service
         IEnumerable<Supplier> ReadSuppliers(string filename, int sourceId);
 
         IEnumerable<SupplierProductBarcode> ReadBarcodes(string filename, int sourceId);
-        
+
         void WriteOutput(List<ConsolidatedCatalog> detectedTransactions);
     }
 }

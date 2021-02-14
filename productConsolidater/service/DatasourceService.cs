@@ -21,19 +21,24 @@ namespace productConsolidater.service
             if (fileName.Contains(DataSourceEnum.Catalog.GetDescription(), StringComparison.InvariantCultureIgnoreCase))
             {
                 dataSourceType = DataSourceEnum.Catalog;
-                companyName = fileName.Replace(DataSourceEnum.Catalog.GetDescription(), "", StringComparison.InvariantCultureIgnoreCase)
+                companyName = fileName.Replace(DataSourceEnum.Catalog.GetDescription(), "",
+                        StringComparison.InvariantCultureIgnoreCase)
                     .Replace(".csv", "");
             }
-            else if (fileName.Contains(DataSourceEnum.Supplier.GetDescription(), StringComparison.InvariantCultureIgnoreCase))
+            else if (fileName.Contains(DataSourceEnum.Supplier.GetDescription(),
+                StringComparison.InvariantCultureIgnoreCase))
             {
                 dataSourceType = DataSourceEnum.Supplier;
-                companyName = fileName.Replace(DataSourceEnum.Supplier.GetDescription(), "", StringComparison.InvariantCultureIgnoreCase)
+                companyName = fileName.Replace(DataSourceEnum.Supplier.GetDescription(), "",
+                        StringComparison.InvariantCultureIgnoreCase)
                     .Replace(".csv", "");
             }
-            else if (fileName.Contains(DataSourceEnum.Barcode.GetDescription(), StringComparison.InvariantCultureIgnoreCase))
+            else if (fileName.Contains(DataSourceEnum.Barcode.GetDescription(),
+                StringComparison.InvariantCultureIgnoreCase))
             {
                 dataSourceType = DataSourceEnum.Barcode;
-                companyName = fileName.Replace(DataSourceEnum.Barcode.GetDescription(), "", StringComparison.InvariantCultureIgnoreCase)
+                companyName = fileName.Replace(DataSourceEnum.Barcode.GetDescription(), "",
+                        StringComparison.InvariantCultureIgnoreCase)
                     .Replace(".csv", "");
             }
 

@@ -1,12 +1,11 @@
 using System;
 using System.ComponentModel;
-using System.Linq;
 
 namespace productConsolidater.model
 {
     public static class EnumHelper
     {
-        public static string GetDescription<T>(this T enumValue) 
+        public static string GetDescription<T>(this T enumValue)
             where T : struct, IConvertible
         {
             if (!typeof(T).IsEnum)
@@ -18,10 +17,7 @@ namespace productConsolidater.model
             if (fieldInfo != null)
             {
                 var attrs = fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), true);
-                if (attrs.Length > 0)
-                {
-                    description = ((DescriptionAttribute)attrs[0]).Description;
-                }
+                if (attrs.Length > 0) description = ((DescriptionAttribute) attrs[0]).Description;
             }
 
             return description;

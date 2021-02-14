@@ -4,12 +4,6 @@ namespace productConsolidater.model.dto
 {
     public class DataSourceDto
     {
-        public int SourceId { get; set; }
-        public string SourceName { get; set; }
-        public string CatalogFilename { get; set; }
-        public string SupplierFileName { get; set; }
-        public string BarcodeFilename { get; set; }
-
         public DataSourceDto(int id,
             string sourceName,
             string fileName,
@@ -35,6 +29,12 @@ namespace productConsolidater.model.dto
                     throw new ArgumentOutOfRangeException(nameof(dataSourceType), dataSourceType, null);
             }
         }
+
+        public int SourceId { get; set; }
+        public string SourceName { get; set; }
+        public string CatalogFilename { get; set; }
+        public string SupplierFileName { get; set; }
+        public string BarcodeFilename { get; set; }
 
         public void SetupFileName(string fileName, DataSourceEnum type)
         {

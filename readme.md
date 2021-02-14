@@ -1,28 +1,18 @@
+## todo list:
 1. Setup input/output data structure (/)
 2. Setup CSV input/output method (/)
 3. setup in-memory data source (/)
-4. Setup processor for handle duplciate products.
-5. unit tests.
-6. (optional) Upgrade it to handle as much as companies instead of two.
+4. Setup processor for handle duplicate products. (/)
+5. unit tests. 
+6. (optional) Upgrade it to handle as much as companies instead of two. (/)
 
+## Case Scenarios
+1. SKU could be same in from different company
+2. Same SKU might points to different product (different barcode)
+3. Same barcode might points to different SKU in different company
+4. Consolidated catalog (SKU list) should not contain duplicate SKU.
 
-
--------
-1. Diff supplier have same SKUs
-2. Diff product code (SKU) point to same product.
-3. Poduct code (SKU) points to diff products in different company
-
--- way to identify products
-1. products with MULTIPLE suppliers, each supplier provide ONE or MORE barcode to ONE product.
-2. One product might has multiple supplier
-3. if barcode same from company A & B, we consider they are same.
-
------ processing logic:
-Assumption: 
-1. If same product exist in both barcode set, take Company A's.
-2. file name checking order: catalog > supplier > barcode
-
-todo: 
-1. read const from config file
-2. add logging
-3. clean up debug console log.
+Some boundary cases:
+1. One product associated with at less one supplier. Each supplier provide not less than 1 barcode.
+2. One product may have multiple suppliers.
+3. But barcode across suppliers is unique.

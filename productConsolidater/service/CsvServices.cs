@@ -27,7 +27,7 @@ namespace productConsolidater.service
             }
             catch (Exception e)
             {
-                var message = $"Something wrong occurred while reading the file. Exception message: {e}";
+                var message = $"Something wrong occurred while reading the file {filename}. Exception message: {e}";
                 throw new Exception(message);
             }
         }
@@ -47,7 +47,7 @@ namespace productConsolidater.service
             }
             catch (Exception e)
             {
-                var message = $"Something wrong occurred while reading the file. Exception message: {e}";
+                var message = $"Something wrong occurred while reading the file {filename}. Exception message: {e}";
                 throw new Exception(message);
             }
         }
@@ -67,19 +67,33 @@ namespace productConsolidater.service
             }
             catch (Exception e)
             {
-                var message = $"Something wrong occurred while reading the file. Exception message: {e}";
+                var message = $"Something wrong occurred while reading the file {filename}. Exception message: {e}";
                 throw new Exception(message);
             }
         }
 
-        public void WriteOutput(List<ConsolidatedCatalog> detectedTransactions)
+        public void WriteOutput(List<ConsolidatedCatalog> consolidatedCatalogs)
         {
-            using var writer = new StreamWriter($"../../../output/result_output_{DateTime.UtcNow:yyyyMMddhhssss}.csv");
-            // using var writer = new StreamWriter($"output/result_output_{DateTime.UtcNow:yyyyMMddhhssss}.csv");
-            using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
-            csv.Flush();
-            csv.WriteHeader<ConsolidatedCatalog>();
-            csv.WriteRecords(detectedTransactions);
+            try
+            {
+                var fileName = $"result_output_{DateTime.UtcNow:yyyyMMddhhssss}";
+                Console.WriteLine($"Printing file {fileName}.csv");
+                using var streamWriter =
+                    new StreamWriter($"../../../output/{fileName}.csv");
+                // using var writer = new StreamWriter($"output/result_output_{DateTime.UtcNow:yyyyMMddhhssss}.csv");
+                using var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture);
+                csvWriter.Context.RegisterClassMap<ConsolidatedCatalogMap>();
+                csvWriter.Flush();
+                csvWriter.WriteHeader<ConsolidatedCatalog>();
+                csvWriter.NextRecord(); // csvHelper won't add newline after header.
+                // https://joshclose.github.io/CsvHelper/getting-started/#writing-a-csv-file
+                csvWriter.WriteRecords(consolidatedCatalogs);
+            }
+            catch (Exception e)
+            {
+                var message = $"Something wrong occurred while writing the file. Exception message: {e}";
+                throw new Exception(message);
+            }
         }
     }
 }

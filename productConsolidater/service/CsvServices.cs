@@ -15,12 +15,11 @@ namespace productConsolidater.service
 
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        public IEnumerable<Catalog> ReadCatalogs(string filename, int sourceId)
+        public IEnumerable<Catalog> ReadCatalogs(string filename, int sourceId, string filePath)
         {
             try
             {
-                using var reader = new StreamReader($"../../../input/{filename}"); // Debug build
-                // using var reader = new StreamReader($"input/{filename}");
+                using var reader = new StreamReader(filePath + filename);
                 using var file = new CsvReader(reader, CultureInfo.InvariantCulture);
                 file.Context.RegisterClassMap<CatalogMap>();
 
@@ -36,12 +35,11 @@ namespace productConsolidater.service
             }
         }
 
-        public IEnumerable<Supplier> ReadSuppliers(string filename, int sourceId)
+        public IEnumerable<Supplier> ReadSuppliers(string filename, int sourceId, string filePath)
         {
             try
             {
-                using var reader = new StreamReader($"../../../input/{filename}"); // Debug build
-                // using var reader = new StreamReader($"input/{filename}");
+                using var reader = new StreamReader(filePath + filename);
                 using var file = new CsvReader(reader, CultureInfo.InvariantCulture);
                 file.Context.RegisterClassMap<SupplierMap>();
 
@@ -57,12 +55,11 @@ namespace productConsolidater.service
             }
         }
 
-        public IEnumerable<SupplierProductBarcode> ReadBarcodes(string filename, int sourceId)
+        public IEnumerable<SupplierProductBarcode> ReadBarcodes(string filename, int sourceId, string filePath)
         {
             try
             {
-                using var reader = new StreamReader($"../../../input/{filename}"); // Debug build
-                // using var reader = new StreamReader($"input/{filename}");
+                using var reader = new StreamReader(filePath + filename);
                 using var file = new CsvReader(reader, CultureInfo.InvariantCulture);
                 file.Context.RegisterClassMap<BarcodeMap>();
 
@@ -84,7 +81,7 @@ namespace productConsolidater.service
             {
                 var fileName = $"result_output_{DateTime.UtcNow:yyyyMMddhhssss}";
                 logger.Info($"Printing file {fileName}.csv");
-                
+
                 using var streamWriter =
                     new StreamWriter($"../../../output/{fileName}.csv");
                 // using var writer = new StreamWriter($"output/result_output_{DateTime.UtcNow:yyyyMMddhhssss}.csv");

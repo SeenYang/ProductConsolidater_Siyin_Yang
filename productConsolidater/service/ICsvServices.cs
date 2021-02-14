@@ -5,11 +5,11 @@ namespace productConsolidater.service
 {
     public interface ICsvServices
     {
-        IEnumerable<Catalog> ReadCatalogs(string filename, int sourceId);
+        IEnumerable<Catalog> ReadCatalogs(string filename, int sourceId, string filePath);
 
-        IEnumerable<Supplier> ReadSuppliers(string filename, int sourceId);
+        IEnumerable<Supplier> ReadSuppliers(string filename, int sourceId, string filePath);
 
-        IEnumerable<SupplierProductBarcode> ReadBarcodes(string filename, int sourceId);
+        IEnumerable<SupplierProductBarcode> ReadBarcodes(string filename, int sourceId, string filePath);
 
         void WriteOutput(List<ConsolidatedCatalog> detectedTransactions);
     }

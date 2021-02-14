@@ -58,9 +58,7 @@ namespace productConsolidater.service
                 if (resultList.Any(b =>
                     b.Sku == catalogTemp.Sku &&
                     b.DataSourceId == catalogTemp.DataSourceId))
-                {
                     continue;
-                }
 
                 resultList.Add(new ConsolidatedCatalog
                 {

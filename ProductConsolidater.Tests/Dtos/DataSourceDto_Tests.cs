@@ -15,7 +15,7 @@ namespace ProductConsolidater.Tests.Dtos
             Assert.Null(exception);
             Assert.True(!string.IsNullOrWhiteSpace(sourceDto.BarcodeFilename), errorMsg);
         }
-        
+
         [Theory]
         [InlineData("TestFile2.csv", DataSourceEnum.Catalog, @"Catalog file name should be ""TestFile2.csv"" ")]
         public void SetupFileNameTest_ValidCases_Catalog(string fileName, DataSourceEnum type, string errorMsg)
@@ -26,7 +26,7 @@ namespace ProductConsolidater.Tests.Dtos
             Assert.Null(exception);
             Assert.True(!string.IsNullOrWhiteSpace(sourceDto.CatalogFilename), errorMsg);
         }
-        
+
         [Theory]
         [InlineData("TestFile3.csv", DataSourceEnum.Supplier, @"Supplier file name should be ""TestFile3.csv"" ")]
         public void SetupFileNameTest_ValidCases_Supplier(string fileName, DataSourceEnum type, string errorMsg)
@@ -37,10 +37,11 @@ namespace ProductConsolidater.Tests.Dtos
             Assert.Null(exception);
             Assert.True(!string.IsNullOrWhiteSpace(sourceDto.SupplierFileName), errorMsg);
         }
-        
-        
+
+
         [Theory]
-        [InlineData("TestFile4.csv", DataSourceEnum.Default, @"Should throw exception due to data source type invalid. ")]
+        [InlineData("TestFile4.csv", DataSourceEnum.Default,
+            @"Should throw exception due to data source type invalid. ")]
         public void SetupFileNameTest_InvalidCases(string fileName, DataSourceEnum type, string errorMsg)
         {
             var sourceDto = new DataSourceDto();
@@ -59,9 +60,9 @@ namespace ProductConsolidater.Tests.Dtos
             var companyId = 1;
             var targetType = DataSourceEnum.Catalog;
             var fileName = "catalogA.csv";
-            
+
             var testObj = new DataSourceDto(companyId, companyName, fileName, targetType);
-            
+
             Assert.NotNull(testObj);
             Assert.Equal(companyId, testObj.SourceId);
             Assert.Equal(companyName, testObj.SourceName);

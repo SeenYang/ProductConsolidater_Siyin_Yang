@@ -12,14 +12,14 @@ namespace ProductConsolidater.Tests.Service
     {
         private readonly IProductService _service;
 
-        string barcode1 = "fake-barcode-1";
-        string barcode2 = "fake-barcode-2";
-        string sku1 = Guid.NewGuid().ToString();
-        string sku2 = Guid.NewGuid().ToString();
-        int dataSourceId1 = 1;
-        int dataSourceId2 = 2;
-        int supplierId1 = 99;
-        int supplierId2 = 100;
+        private readonly string barcode1 = "fake-barcode-1";
+        private readonly string barcode2 = "fake-barcode-2";
+        private readonly int dataSourceId1 = 1;
+        private readonly int dataSourceId2 = 2;
+        private readonly string sku1 = Guid.NewGuid().ToString();
+        private readonly string sku2 = Guid.NewGuid().ToString();
+        private readonly int supplierId1 = 99;
+        private readonly int supplierId2 = 100;
 
         public ProductService_GetBarcodeList_Tests()
         {
@@ -52,7 +52,7 @@ namespace ProductConsolidater.Tests.Service
                 Sku = sku1,
                 SupplierId = supplierId1
             };
-            
+
 
             // Prevent context shared across test and mess up result.
             var context = new MockDbContextDto

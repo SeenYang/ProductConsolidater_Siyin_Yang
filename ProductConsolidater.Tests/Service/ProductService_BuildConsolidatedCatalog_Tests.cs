@@ -50,13 +50,13 @@ namespace ProductConsolidater.Tests.Service
                 new ConsolidatedCatalog
                 {
                     DataSourceId = 1,
-                    Sku = "FAKE-PRD-1",
+                    Sku = "FAKE-PRD-1"
                 },
 
                 new ConsolidatedCatalog
                 {
                     DataSourceId = 2,
-                    Sku = "FAKE-PRD-2",
+                    Sku = "FAKE-PRD-2"
                 }
             };
 

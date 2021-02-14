@@ -6,6 +6,8 @@ using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NLog;
+using NLog.Config;
+using NLog.Targets;
 using productConsolidater.model;
 using productConsolidater.model.dto;
 using productConsolidater.service;
@@ -19,8 +21,6 @@ namespace productConsolidater
         private static IConfigurationRoot _config;
         private static Logger Logger;
 
-        private const string _inputFilePath = "../../../input";
-
         // Initial in-memory data set.
         private static readonly List<Catalog> _catalogs = new List<Catalog>();
         private static readonly List<Supplier> _suppliers = new List<Supplier>();
@@ -28,26 +28,38 @@ namespace productConsolidater
         private static readonly List<ConsolidatedCatalog> _consolidatedCatalogs = new List<ConsolidatedCatalog>();
         private static readonly List<Company> _companies = new List<Company>();
 
+        private static string HostingEnvironment =>
+            Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
+
         private static void Main(string[] args)
         {
-            AddConfiguration();
-            RegisterServices();
-
-
-            // todo: replace with real data provider and put into DI for better usage.
-            var mockContext = new MockDbContextDto
+            try
             {
-                Barcodes = _barcodes,
-                Catalog = _catalogs,
-                Supplier = _suppliers,
-                ConsolidatedCatalog = _consolidatedCatalogs,
-                Company = _companies
-            };
+                RegisterServices();
+                AddConfiguration();
 
-            GetDataSource(mockContext);
-            ProcessProducts(mockContext);
-            PrintProcessedData(mockContext);
 
+                // todo: replace with real data provider and put into DI for better usage.
+                var mockContext = new MockDbContextDto
+                {
+                    Barcodes = _barcodes,
+                    Catalog = _catalogs,
+                    Supplier = _suppliers,
+                    ConsolidatedCatalog = _consolidatedCatalogs,
+                    Company = _companies
+                };
+
+                GetDataSource(mockContext);
+                ProcessProducts(mockContext);
+                PrintProcessedData(mockContext);
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e);
+            }
+
+            Console.WriteLine("Press enter to exist.");
+            Console.ReadLine();
             DisposeServices();
         }
 
@@ -103,15 +115,18 @@ namespace productConsolidater
             {
                 Logger.Info($"Adding data source from {source.SourceName}, sourceId: {source.SourceId}");
                 context.Company.Add(_mapper.Map<DataSourceDto, Company>(source));
-                context.Catalog.AddRange(csvSvc.ReadCatalogs(source.CatalogFilename, source.SourceId));
-                context.Supplier.AddRange(csvSvc.ReadSuppliers(source.SupplierFileName, source.SourceId));
-                context.Barcodes.AddRange(csvSvc.ReadBarcodes(source.BarcodeFilename, source.SourceId));
+                context.Catalog.AddRange(csvSvc.ReadCatalogs(source.CatalogFilename, source.SourceId,
+                    _config["InputFilePath"]));
+                context.Supplier.AddRange(csvSvc.ReadSuppliers(source.SupplierFileName, source.SourceId,
+                    _config["InputFilePath"]));
+                context.Barcodes.AddRange(csvSvc.ReadBarcodes(source.BarcodeFilename, source.SourceId,
+                    _config["InputFilePath"]));
             }
         }
 
         private static void ProcessProducts(MockDbContextDto mockContext)
         {
-            Logger.Info($"Processing data.");
+            Logger.Info("Processing data.");
             var _service = _serviceProvider.GetService<IProductService>();
             if (_service == null) throw new Exception("Fail to initial IProductService.");
 
@@ -120,21 +135,18 @@ namespace productConsolidater
 
         private static void AddConfiguration()
         {
-            var env = Environment.GetEnvironmentVariable("ASPNET_ENVIRONMENT");
-
-            var builder = new ConfigurationBuilder()
-                .AddEnvironmentVariables("Developoment")
-                .AddJsonFile($"appsettings.json", true, true)
-                .AddJsonFile($"appsettings.{env}.json", true, true)
-                .AddEnvironmentVariables();
-
-            _config = builder.Build();
-
-            var logConfig = new NLog.Config.LoggingConfiguration();
-            var logConsole = new NLog.Targets.ConsoleTarget("logconsole");
+            var logConfig = new LoggingConfiguration();
+            var logConsole = new ConsoleTarget("logconsole");
             logConfig.AddRule(LogLevel.Info, LogLevel.Fatal, logConsole);
             LogManager.Configuration = logConfig;
             Logger = LogManager.GetCurrentClassLogger();
+            
+            Logger.Info($"Current env is {HostingEnvironment}.");
+            var builder = new ConfigurationBuilder()
+                .AddJsonFile($"appsettings.{HostingEnvironment}.json", true, true);
+
+            _config = builder.Build();
+
         }
 
         private static void RegisterServices()

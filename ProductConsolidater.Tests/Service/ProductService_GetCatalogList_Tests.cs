@@ -10,15 +10,13 @@ namespace ProductConsolidater.Tests.Service
     public class ProductService_GetCatalogList_Tests
     {
         private readonly IProductService _service;
+        private readonly string barcode1 = "bar-code-1";
+        private readonly string barcode2 = "bar-code-2";
         private readonly string sku1 = "sku-1";
         private readonly string sku2 = "sku-2";
         private readonly string sku3 = "sku-3";
-        private readonly string barcode1 = "bar-code-1";
-        private readonly string barcode2 = "bar-code-2";
-        private readonly string barcode3 = "bar-code-3";
         private readonly int sourceId1 = 1;
         private readonly int sourceId2 = 2;
-        private readonly int sourceId3 = 3;
 
 
         public ProductService_GetCatalogList_Tests()
@@ -27,9 +25,8 @@ namespace ProductConsolidater.Tests.Service
         }
 
         /// <summary>
-        /// Scenario 1: 2 barcode with 3 SKUs. First barcode with two SKUs, take the one with smaller sourceId.
-        ///
-        /// Expect Output: 2 SKUs (catalog).
+        ///     Scenario 1: 2 barcode with 3 SKUs. First barcode with two SKUs, take the one with smaller sourceId.
+        ///     Expect Output: 2 SKUs (catalog).
         /// </summary>
         [Fact(DisplayName = "2 barcode with 3 SKUs. First barcode with two SKUs, take the one with smaller sourceId.")]
         public void Test1()
@@ -81,9 +78,8 @@ namespace ProductConsolidater.Tests.Service
         }
 
         /// <summary>
-        /// Scenario 2: Two barcode with 1 SKU.
-        ///
-        /// Expect Output: 1 SKU (catalog).
+        ///     Scenario 2: Two barcode with 1 SKU.
+        ///     Expect Output: 1 SKU (catalog).
         /// </summary>
         [Fact(DisplayName = "Two barcode with 1 SKU. Should return 1 catalog.")]
         public void Test2()
@@ -128,9 +124,8 @@ namespace ProductConsolidater.Tests.Service
         }
 
         /// <summary>
-        /// Scenario 3: Same SKU used in different data source (company), each (SKU, Company) contain different barcode
-        ///
-        /// Expect Output: 2 lines, same SKU (catalog) with different source Id.
+        ///     Scenario 3: Same SKU used in different data source (company), each (SKU, Company) contain different barcode
+        ///     Expect Output: 2 lines, same SKU (catalog) with different source Id.
         /// </summary>
         [Fact(DisplayName =
             "Same SKU used in different data source (company), each (SKU, Company) contain different barcode")]

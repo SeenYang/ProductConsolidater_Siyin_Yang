@@ -4,6 +4,10 @@ namespace productConsolidater.model.dto
 {
     public class DataSourceDto
     {
+        public DataSourceDto()
+        {
+        }
+
         public DataSourceDto(int id,
             string sourceName,
             string fileName,
@@ -49,10 +53,7 @@ namespace productConsolidater.model.dto
                 case DataSourceEnum.Barcode:
                     BarcodeFilename = fileName;
                     break;
-
                 case DataSourceEnum.Default:
-                    break;
-                default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
         }

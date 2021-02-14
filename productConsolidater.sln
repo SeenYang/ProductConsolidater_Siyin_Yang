@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "productConsolidater", "productConsolidater\productConsolidater.csproj", "{DAF0A185-2765-414B-BC69-6C40E75F3B08}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductConsolidater.Tests", "ProductConsolidater.Tests\ProductConsolidater.Tests.csproj", "{B83745C7-D03D-4E3C-8A07-BE43D47125B3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{DAF0A185-2765-414B-BC69-6C40E75F3B08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DAF0A185-2765-414B-BC69-6C40E75F3B08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DAF0A185-2765-414B-BC69-6C40E75F3B08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B83745C7-D03D-4E3C-8A07-BE43D47125B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B83745C7-D03D-4E3C-8A07-BE43D47125B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B83745C7-D03D-4E3C-8A07-BE43D47125B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B83745C7-D03D-4E3C-8A07-BE43D47125B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

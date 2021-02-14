@@ -30,7 +30,7 @@ namespace productConsolidater.service
             mockContext.ConsolidatedCatalog.AddRange(result);
         }
 
-        private IEnumerable<ConsolidatedCatalog> BuildConsolidatedCatalog(
+        public IEnumerable<ConsolidatedCatalog> BuildConsolidatedCatalog(
             IEnumerable<ConsolidatedCatalog> consolidatedList, MockDbContextDto mockContext)
         {
             var result = (from cList in consolidatedList

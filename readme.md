@@ -7,12 +7,18 @@
 6. (optional) Upgrade it to handle as much as companies instead of two. (/)
 
 ## Case Scenarios
-1. SKU could be same in from different company
-2. Same SKU might points to different product (different barcode)
-3. Same barcode might points to different SKU in different company
-4. Consolidated catalog (SKU list) should not contain duplicate SKU.
+1. Company A and B could have conflicting product codes (SKUs).
+2. Product codes might be same, but they are different products. _(*Please refer to assumption)_
+3. Product codes are different, but they are same product. (Distinct by barcode)
+4. You should not be duplicating product records in merged catalog _(*Please refer to assumption)_.
+5. Product on merged catalog must have information about the company it belongs to originally.
 
-Some boundary cases:
-1. One product associated with at less one supplier. Each supplier provide not less than 1 barcode.
-2. One product may have multiple suppliers.
-3. But barcode across suppliers is unique.
+### Assumption
+1. For #2 scenario, same SKU points to different products (barcode) must be in same data source (company). 
+Same SKU in multiple data sources can't be different barcode. In current solution, it will save in to `ConsolidatedCatalog` with different `Source ID`.
+2. For #4 scenario, duplicating product records refers to `SKU + Source`. Same `SKU` could points to different product in different `Source`.
+3. All `suppliers` and `catalog` appears in `barcode` exist in provide files.
+
+### unsupported case:
+1. Product codes (SKU) might be same, but they are different products, with different barcode.
+We only support if same barcode with two SKU, or same SKU

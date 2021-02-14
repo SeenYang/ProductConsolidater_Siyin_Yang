@@ -34,15 +34,28 @@ option 3:
 
 ## Task Checklist:
 
-###Initial load
+### Initial load
 Mega merge: All products from both companies should get merge into a common catalog
 
-###BAU mode
+### BAU mode
 * A new product added in Catalog A - (/)Add into `CatalogA.csv`.
 * An existing product removed from Catalog A - (/)Same as above
 * An existing product in Catalog B got new supplier with set of barcodes - (/)Handled by solution.
 
-## Case Scenarios
+## Business Logic analyst and Case Scenarios
+
+Within one `Caompany`, `SKU` is unique to `Product`. So, For each `company`, each `catalog` can be identified in merged catalog list by `SKU` + `Company Source`.
+
+For `Barcode`, it's global unique, so if we consider two item are the same if they have same `barcode`, even `SKU` is different.
+
+For `Supplier`, due to the ID doesn't make any sense after merged, we need to associate with `Company ID` when we refer it.
+
+The Steps for merging:
+1. Group `barcodes`'s `SKU+Company` by barcode, which will put the data with same barcode into one.
+2. Take the smaller `data source (company) ID` as `barcode`'s `SKU` and `Compnay`.
+3. Distinct the `SKU` and `Data source (company)` into merged catalog list.
+
+### Some Cases
 1. Company A and B could have conflicting product codes (SKUs).
 2. Product codes might be same, but they are different products. _(*Please refer to assumption)_
 3. Product codes are different, but they are same product. (Distinct by barcode)
@@ -53,6 +66,7 @@ Mega merge: All products from both companies should get merge into a common cata
 1. For #2 scenario, same SKU points to different products (barcode) must be in same data source (company). 
 Same SKU in multiple data sources can't be different barcode. In current solution, it will save in to `ConsolidatedCatalog` with different `Source ID`.
 2. For #4 scenario, duplicating product records refers to `SKU + Source`. Same `SKU` could points to different product in different `Source`.
+3. Within `Company`, each `catalog` (Product) provided by one `Supplier`.
 3. All `suppliers` and `catalog` appears in `barcode` exist in provide files.
 
 ### unsupported case:
@@ -66,4 +80,5 @@ We only support if same barcode with two SKU, or same SKU
 4. Setup processor for handle duplicate products. (/) 2021-02-14
 5. unit tests. (/) 2021-02-14
 6. (optional) Upgrade it to handle as much as companies instead of two. (/) 2021-02-14
+
 Total approx spent 6 hours.

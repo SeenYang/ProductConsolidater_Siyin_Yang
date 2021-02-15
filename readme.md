@@ -6,7 +6,7 @@ The console app is mainly consolidating catalogs from multiple sources as descri
 
 ### Before Run
 Before running the app, there's some tricks need to be done about the input files.
-1. All file should in this format `[tyupe][source].csv`. i.e. For `catalog` info from `company A`, it should be `catalogA.csv`.
+1. All file should in this format `[type][source].csv`. i.e. For `catalog` info from `company A`, it should be `catalogA.csv`.
 2. Currently every source need to provide three files: `catalog`, `supplier`, and `barcode`. Missing any of this the source will be skipped.
 
 ### how to run
@@ -17,7 +17,7 @@ build the repo, and run in any IDE as you like.
 
 ```
 option 2:
-1. umccompress the zip file, put `csv` files into \input folder
+1. unzip the publish.zip file, put `csv` files into \input folder
 2. run productConsolidater.exe
 3. check \output folder for result.
 ```
@@ -25,7 +25,7 @@ option 2:
 ```
 option 3:   
 1. get the source code
-2. use termial go in the foler
+2. use terminal go in the folder
 3. run `dotnet publish -c Release`
 4. go to ~\productConsolidater\bin\Release\net5.0\publish\ and put files into `\input` folder
 5.1. run productConsolidater.exe                -- Windows
@@ -45,9 +45,9 @@ Mega merge: All products from both companies should get merge into a common cata
 
 ## Business Logic analyst and Case Scenarios
 
-Within one `Caompany`, `SKU` is unique to `Product`. So, For each `company`, each `catalog` can be identified in merged catalog list by `SKU` + `Company Source`.
+Within one `Company`, `SKU` is unique to `Product`. So, for each `company`, each `catalog` can be identified in merged catalog list by `SKU` + `Company Source`.
 
-For `Barcode`, it's global unique, so if we consider two item are the same if they have same `barcode`, even `SKU` is different.
+For `Barcode`, it's global unique, so if we consider two items are the same if they have same `barcode`, even `SKU` is different.
 
 For `Supplier`, due to the ID doesn't make any sense after merged, we need to associate with `Company ID` when we refer it.
 
@@ -74,7 +74,7 @@ Same SKU in multiple data sources can't be different barcode. In current solutio
 1. Product codes (SKU) might be same, but they are different products, with different barcode.
 We only support if same barcode with two SKU, or same SKU
 
-## todo list:
+## Todo list:
 1. Setup input/output data structure (/) 2021-02-13
 2. Setup CSV input/output method (/) 2021-02-13
 3. setup in-memory data source (/) 2021-02-13
@@ -82,4 +82,4 @@ We only support if same barcode with two SKU, or same SKU
 5. unit tests. (/) 2021-02-14
 6. (optional) Upgrade it to handle as much as companies instead of two. (/) 2021-02-14
 
-Total approx spent 6 hours.
+Total approx. spent 6 hours.
